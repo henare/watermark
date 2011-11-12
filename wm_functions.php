@@ -33,7 +33,12 @@ function mm_create_text($wm_create_array,$mmFont){
 	imagefill($imageLogo, 0, 0, $bgLogo);
 	$mmTransp=127-($wm_create_array[9]*1.27);
 	$schriftLogo=imagecolorallocatealpha($imageLogo, $mmRot, $mmGruen, $mmBlau, $mmTransp);
-  	imagettftext($imageLogo, $wm_create_array[5], 0, 0, abs($sizeLogo[5]), $schriftLogo, $mmFont, $wm_create_array[7]);
+
+	// Hack to prepend the name of the person uploading the image to the watermark
+	$current_user = wp_get_current_user();
+	$watermark_text = $current_user->display_name . ' - ' . $wm_create_array[7];
+
+	imagettftext($imageLogo, $wm_create_array[5], 0, 0, abs($sizeLogo[5]), $schriftLogo, $mmFont, $watermark_text);
   return($imageLogo);
 }
 
